@@ -1,0 +1,56 @@
+{
+  "collections": [
+    {
+      "collectionName": "users",
+      "documentId": "User UID",
+      "fields": [
+        { "name": "name", "type": "string" },
+        { "name": "email", "type": "string" },
+        { "name": "branch", "type": "string" },
+        { "name": "role", "type": "string" }
+      ]
+    },
+    {
+      "collectionName": "schedules",
+      "documentId": "auto",
+      "fields": [
+        { "name": "busNumber", "type": "string" },
+        { "name": "driver", "type": "string" },
+        { "name": "departureBranch", "type": "string" },
+        { "name": "arrivalBranch", "type": "string" },
+        { "name": "departureTime", "type": "string" },
+        { "name": "price", "type": "number" },
+        { "name": "status", "type": "string" }
+      ]
+    },
+    {
+      "collectionName": "parcels",
+      "documentId": "auto",
+      "fields": [
+        { "name": "trackingNumber", "type": "string" },
+        { "name": "senderName", "type": "string" },
+        { "name": "senderPhone", "type": "string" },
+        { "name": "receiverName", "type": "string" },
+        { "name": "receiverPhone", "type": "string" },
+        { "name": "sendingBranch", "type": "string" },
+        { "name": "destinationBranch", "type": "string" },
+        { "name": "itemDescription", "type": "string" },
+        { "name": "price", "type": "number" },
+        { "name": "status", "type": "string" },
+        { "name": "timestamp", "type": "string" },
+        { "name": "departureTimestamp", "type": "string" }
+      ]
+    },
+    {
+      "collectionName": "finances",
+      "documentId": "auto",
+      "fields": [
+        { "name": "category", "type": "string" },
+        { "name": "amount", "type": "number" },
+        { "name": "description", "type": "string" },
+        { "name": "branch", "type": "string" },
+        { "name": "date", "type": "string" }
+      ]
+    }
+  ]
+}
