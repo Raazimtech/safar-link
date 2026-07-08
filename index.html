@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SafarLink Mobility Management System</title>
+  <title>SafarLink Mobility Management System (Local Edition)</title>
   
   <meta name="theme-color" content="#2563eb" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlNhZmFyTGluayBNb2JpbGl0eSIsCiAgInNob3J0X25hbWUiIjogIlNhZmFyTGluayIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiIjogIiMyNTYzZWIiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2ltZy5pY29uczgub29tL2ZsdWVuY3kvNTEyL2J1cy5wbmciLAogICAgICAic2l6ZXMiIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' } } } }
+    }
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide"></script>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <!-- We removed tailwind cdn since Vite processes our css -->
-  <link rel="stylesheet" href="/src/index.css" />
 
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -30,11 +36,11 @@
     <div v-if="!isAuthenticated" class="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div class="w-full max-w-md glass-card rounded-2xl shadow-xl p-8 space-y-6">
         <div class="text-center">
-          <div class="inline-flex p-3 bg-blue-50 rounded-xl text-blue-600 mb-3">
+          <div class="inline-flex p-3 bg-brand-50 rounded-xl text-brand-600 mb-3">
             <i data-lucide="bus" class="w-8 h-8"></i>
           </div>
           <h2 class="text-3xl font-bold tracking-tight text-slate-900">SafarLink</h2>
-          <p class="text-sm text-slate-500 mt-1">Terminal Environment</p>
+          <p class="text-sm text-slate-500 mt-1">Local Terminal Environment</p>
         </div>
 
         <div v-if="authError" class="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs flex items-center gap-2">
@@ -53,21 +59,21 @@
           <form @submit.prevent="handleInitializeSystem" class="space-y-4">
             <div>
               <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Admin Full Name</label>
-              <input v-model="authForm.name" type="text" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="Master Administrator" />
+              <input v-model="authForm.name" type="text" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" placeholder="Master Administrator" />
             </div>
             <div>
               <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Admin Email Address</label>
-              <input v-model="authForm.email" type="email" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="admin@safarlink.com" />
+              <input v-model="authForm.email" type="email" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" placeholder="admin@safarlink.com" />
             </div>
             <div>
               <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Headquarters Branch</label>
-              <select v-model="authForm.branch" class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+              <select v-model="authForm.branch" class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all">
                 <option v-for="b in staticBranches" :key="b" :value="b">{{ b }}</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Master Password</label>
-              <input v-model="authForm.password" type="password" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="••••••••" />
+              <input v-model="authForm.password" type="password" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" placeholder="••••••••" />
             </div>
             <button type="submit" :disabled="loading" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl transition-all shadow-lg flex justify-center items-center gap-2">
               <span v-if="loading" class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
@@ -79,15 +85,15 @@
         <form v-else @submit.prevent="handleLogin" class="space-y-4">
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Email Address</label>
-            <input v-model="authForm.email" type="email" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="name@company.com" />
+            <input v-model="authForm.email" type="email" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" placeholder="name@company.com" />
           </div>
           <div>
             <div class="flex justify-between items-center mb-1">
               <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500">Password</label>
             </div>
-            <input v-model="authForm.password" type="password" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="••••••••" />
+            <input v-model="authForm.password" type="password" required class="w-full px-4 py-2.5 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" placeholder="••••••••" />
           </div>
-          <button type="submit" :disabled="loading" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all shadow-lg flex justify-center items-center gap-2">
+          <button type="submit" :disabled="loading" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl transition-all shadow-lg flex justify-center items-center gap-2">
             <span v-if="loading" class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
             <span>Sign In to Terminal</span>
           </button>
@@ -99,18 +105,18 @@
       <aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex-shrink-0 flex flex-col">
         <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100">
           <div class="flex items-center gap-3">
-            <div class="p-2 bg-blue-600 text-white rounded-xl">
+            <div class="p-2 bg-brand-600 text-white rounded-xl">
               <i data-lucide="bus" class="w-5 h-5"></i>
             </div>
             <div>
               <h1 class="font-bold text-slate-900 leading-none">SafarLink</h1>
-              <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider">Terminal Instance</span>
+              <span class="text-[10px] font-semibold text-brand-600 uppercase tracking-wider">Local Instance</span>
             </div>
           </div>
         </div>
 
         <nav class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
-          <button v-for="item in menuItems" :key="item.id" v-show="hasPermission(item.roles)" @click="currentView = item.id; renderChartsIfNeeded()" :class="currentView === item.id ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50'" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all text-left">
+          <button v-for="item in menuItems" :key="item.id" v-show="hasPermission(item.roles)" @click="currentView = item.id; renderChartsIfNeeded()" :class="currentView === item.id ? 'bg-brand-50 text-brand-600 font-semibold' : 'text-slate-600 hover:bg-slate-50'" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all text-left">
             <i :data-lucide="item.icon" class="w-4 h-4"></i>
             <span>{{ item.label }}</span>
           </button>
@@ -118,7 +124,7 @@
 
         <div class="p-4 border-t border-slate-100 bg-slate-50/60">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md">
+            <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold shadow-md">
               {{ currentUserProfile?.name?.substring(0,2).toUpperCase() }}
             </div>
             <div class="min-w-0 flex-1">
@@ -143,18 +149,18 @@
             <div class="relative">
               <button @click="toggleNotifications" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition-all relative">
                 <i data-lucide="bell" class="w-4 h-4"></i>
-                <span v-if="unreadNotificationsCount > 0" class="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-600 rounded-full ring-2 ring-white"></span>
+                <span v-if="unreadNotificationsCount > 0" class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-600 rounded-full ring-2 ring-white"></span>
               </button>
               
               <div v-if="showNotificationsBox" class="absolute right-0 mt-2 w-80 glass-card rounded-2xl shadow-xl py-2 z-50 text-xs text-slate-700">
                 <div class="px-4 py-2 border-b border-slate-100 flex justify-between items-center">
                   <span class="font-bold text-slate-900">System Logs</span>
-                  <button @click="clearNotifications" class="text-[10px] text-blue-600 hover:underline">Clear Logs</button>
+                  <button @click="clearNotifications" class="text-[10px] text-brand-600 hover:underline">Clear Logs</button>
                 </div>
                 <div class="max-h-64 overflow-y-auto custom-scrollbar">
                   <div v-if="notifications.length === 0" class="p-4 text-center text-slate-400">No active alerts.</div>
                   <div v-for="n in notifications" :key="n.id" class="px-4 py-2.5 border-b border-slate-50 hover:bg-slate-50 flex items-start gap-2.5">
-                    <span :class="n.type === 'success' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'" class="p-1 rounded-md mt-0.5">
+                    <span :class="n.type === 'success' ? 'bg-emerald-50 text-emerald-600' : 'bg-brand-50 text-brand-600'" class="p-1 rounded-md mt-0.5">
                       <i data-lucide="info" class="w-3 h-3"></i>
                     </span>
                     <div>
@@ -176,7 +182,7 @@
             </div>
             <div class="glass-card p-5 rounded-2xl shadow-sm relative flex items-center justify-between">
               <div><p class="text-[11px] font-bold text-slate-400 uppercase">In-Transit Parcels</p><h3 class="text-2xl font-bold text-slate-900 mt-1">{{ kpis.transitParcels }}</h3></div>
-              <div class="p-3 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="truck" class="w-5 h-5"></i></div>
+              <div class="p-3 bg-blue-50 text-brand-600 rounded-xl"><i data-lucide="truck" class="w-5 h-5"></i></div>
             </div>
             <div class="glass-card p-5 rounded-2xl shadow-sm relative flex items-center justify-between">
               <div><p class="text-[11px] font-bold text-slate-400 uppercase">Active Fleets</p><h3 class="text-2xl font-bold text-slate-900 mt-1">{{ kpis.activeRoutes }}</h3></div>
@@ -203,7 +209,7 @@
         <div v-if="currentView === 'departure-schedule'" class="flex-1 p-6 space-y-4 overflow-y-auto custom-scrollbar">
           <div class="flex justify-between items-center">
             <input v-model="filters.scheduleSearch" type="text" placeholder="Filter Destination..." class="px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none" />
-            <button @click="openModal('schedule')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl text-xs flex items-center gap-2">
+            <button @click="openModal('schedule')" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl text-xs flex items-center gap-2">
               <i data-lucide="plus" class="w-4 h-4"></i> Create Dispatch Line
             </button>
           </div>
@@ -217,7 +223,7 @@
                   <tr v-for="s in filteredSchedules" :key="s.id" class="hover:bg-slate-50/50">
                     <td class="p-4 font-bold text-slate-900">{{ s.busNumber }}</td>
                     <td class="p-4 text-slate-700">{{ s.driver }}</td>
-                    <td class="p-4 font-semibold text-slate-700">{{ s.departureBranch }} → <span class="text-blue-600">{{ s.arrivalBranch }}</span></td>
+                    <td class="p-4 font-semibold text-slate-700">{{ s.departureBranch }} → <span class="text-brand-600">{{ s.arrivalBranch }}</span></td>
                     <td class="p-4 text-slate-800">{{ s.departureTime }}</td>
                     <td class="p-4 font-bold">${{ s.price }}</td>
                     <td class="p-4"><span class="px-2 py-0.5 rounded-full font-bold text-[10px] border bg-slate-50">{{ s.status }}</span></td>
@@ -238,9 +244,9 @@
             <input v-model="filters.parcelSearch" type="text" placeholder="Search tracking, names, phone numbers..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm" />
             <div class="flex justify-between items-center text-xs">
               <div class="flex gap-2">
-                <button v-for="st in ['All', 'Registered', 'On The Way', 'Arrived', 'Received']" :key="st" @click="filters.parcelStatus = st" :class="filters.parcelStatus === st ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'" class="px-3 py-1 rounded-lg">{{ st }}</button>
+                <button v-for="st in ['All', 'Registered', 'On The Way', 'Arrived', 'Received']" :key="st" @click="filters.parcelStatus = st" :class="filters.parcelStatus === st ? 'bg-slate-900 text-white' : 'bg-slate-100'" class="px-3 py-1 rounded-lg">{{ st }}</button>
               </div>
-              <button @click="openModal('parcel')" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-xl flex items-center gap-2"><i data-lucide="package-plus" class="w-4 h-4"></i> Register Parcel</button>
+              <button @click="openModal('parcel')" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-xl flex items-center gap-2"><i data-lucide="package-plus" class="w-4 h-4"></i> Register Parcel</button>
             </div>
           </div>
 
@@ -251,7 +257,7 @@
                 <tbody class="divide-y divide-slate-100">
                   <tr v-if="filteredParcels.length === 0"><td colspan="6" class="text-center py-12 text-slate-400">No parcels found.</td></tr>
                   <tr v-for="p in filteredParcels" :key="p.id" class="hover:bg-slate-50/50">
-                    <td class="p-4 font-mono font-bold text-blue-600">{{ p.trackingNumber }}</td>
+                    <td class="p-4 font-mono font-bold text-brand-600">{{ p.trackingNumber }}</td>
                     <td class="p-4"><div><p class="font-bold">{{ p.senderName }}</p><p class="text-[10px] text-slate-400">{{ p.senderPhone }}</p></div></td>
                     <td class="p-4"><div><p class="font-medium">{{ p.itemDescription }}</p><p class="text-[10px] text-slate-400">{{ p.receiverName }} • {{ p.receiverPhone }}</p></div></td>
                     <td class="p-4 font-medium">{{ p.sendingBranch }} → {{ p.destinationBranch }}</td>
@@ -270,7 +276,7 @@
         <div v-if="currentView === 'finance'" class="flex-1 p-6 space-y-4 overflow-y-auto custom-scrollbar">
           <div class="flex justify-between items-center">
             <select v-model="filters.financeCategory" class="px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-xl"><option value="All">All Categories</option><option v-for="cat in staticCategories" :key="cat" :value="cat">{{ cat }}</option></select>
-            <button @click="openModal('finance')" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-xl text-xs flex items-center gap-2"><i data-lucide="receipt" class="w-4 h-4"></i> Post Ledger Entry</button>
+            <button @click="openModal('finance')" class="px-4 py-2 bg-brand-600 text-white font-medium rounded-xl text-xs flex items-center gap-2"><i data-lucide="receipt" class="w-4 h-4"></i> Post Ledger Entry</button>
           </div>
           <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
             <div class="overflow-x-auto custom-scrollbar">
@@ -357,7 +363,7 @@
             </div>
 
             <div v-if="activeModal === 'parcel'" class="space-y-4">
-              <div class="p-3 bg-blue-50 text-blue-700 rounded-xl font-medium mb-2 flex justify-between"><span>Tracking Hash:</span><span class="font-mono font-bold">{{ generatedTrackingCode }}</span></div>
+              <div class="p-3 bg-brand-50 text-brand-700 rounded-xl font-medium mb-2 flex justify-between"><span>Tracking Hash:</span><span class="font-mono font-bold">{{ generatedTrackingCode }}</span></div>
               <div class="grid grid-cols-2 gap-4">
                 <div><label class="block font-semibold text-slate-600 mb-1">Sender Name</label><input v-model="modalData.parcel.senderName" type="text" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl" /></div>
                 <div><label class="block font-semibold text-slate-600 mb-1">Sender Phone</label><input v-model="modalData.parcel.senderPhone" type="text" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl" /></div>
@@ -381,13 +387,331 @@
         </div>
         
         <div class="p-4 border-t border-slate-100 flex justify-end gap-2 bg-slate-50/50 rounded-b-2xl">
-          <button @click="closeModal" type="button" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl font-semibold transition-all">Cancel</button>
-          <button type="submit" form="modalForm" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md">Commit Database Entry</button>
+          <button @click="closeModal" class="px-4 py-2 border border-slate-200 hover:bg-slate-100 rounded-xl font-semibold transition-all">Cancel</button>
+          <button type="submit" form="modalForm" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md">Commit Database Entry</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import { createApp, ref, computed, onMounted, nextTick, watch } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+
+    // LOCAL STORAGE DATABASE MANAGER
+    const DB_KEY = 'safarlink_local_db';
+    const initLocalDB = () => {
+      const stored = localStorage.getItem(DB_KEY);
+      return stored ? JSON.parse(stored) : { users: [], parcels: [], schedules: [], finances: [], logs: [] };
+    };
+
+    createApp({
+      setup() {
+        const dbState = ref(initLocalDB());
+        
+        // Save database explicitly after modifications
+        const saveDB = () => { localStorage.setItem(DB_KEY, JSON.stringify(dbState.value)); };
+
+        // AUTHENTICATION
+        const isAuthenticated = ref(false);
+        const isSystemEmpty = computed(() => dbState.value.users.length === 0);
+        const loading = ref(false);
+        const authError = ref(null);
+        const currentUserProfile = ref(null);
+
+        const authForm = ref({ email: '', password: '', name: '', branch: 'Hargeisa' });
+
+        // APPLICATION STATE
+        const currentView = ref('dashboard');
+        const staticBranches = ['Hargeisa', 'Borama', 'Burao', 'Berbera', 'Gabiley', 'Las Anod'];
+        const staticCategories = ['Passenger Tickets', 'Parcel Delivery', 'Cargo', 'Other'];
+        const menuItems = [
+          { id: 'dashboard', label: 'Dashboard Control Matrix', icon: 'layout-dashboard', roles: ['Super Admin', 'Admin', 'Branch Manager', 'Staff'] },
+          { id: 'departure-schedule', label: 'Fleet Departures Matrix', icon: 'calendar', roles: ['Super Admin', 'Admin', 'Branch Manager', 'Staff'] },
+          { id: 'parcel-management', label: 'Consignment & Parcel Track', icon: 'package', roles: ['Super Admin', 'Admin', 'Branch Manager', 'Staff'] },
+          { id: 'finance', label: 'Revenue Accounting Ledger', icon: 'wallet', roles: ['Super Admin', 'Admin', 'Branch Manager'] },
+          { id: 'users', label: 'Terminal Personnel Roster', icon: 'users', roles: ['Super Admin'] } // Locked to Super Admin Only
+        ];
+
+        const activeBranch = computed(() => currentUserProfile.value?.branch || 'Hargeisa');
+
+        // UI STATE
+        const showNotificationsBox = ref(false);
+        const activeModal = ref(null);
+        const notifications = ref([]);
+        const filters = ref({ parcelSearch: '', parcelStatus: 'All', scheduleSearch: '', financeCategory: 'All' });
+        
+        const modalData = ref({
+          user: { name: '', email: '', password: '', branch: 'Hargeisa', role: 'Staff' },
+          schedule: { busNumber: '', driver: '', arrivalBranch: 'Borama', departureTime: '', price: 15 },
+          parcel: { senderName: '', senderPhone: '', receiverName: '', receiverPhone: '', destinationBranch: 'Borama', itemDescription: '', price: 10 },
+          finance: { category: 'Parcel Delivery', amount: 50, description: '' }
+        });
+        const generatedTrackingCode = ref('');
+        let revenueChartInstance = null;
+        let densityChartInstance = null;
+
+        // SYSTEM INITIALIZATION LOGIC (Master Admin Creation)
+        const handleInitializeSystem = () => {
+          loading.value = true;
+          const masterAdmin = {
+            id: 'USR-' + Date.now().toString(),
+            name: authForm.value.name,
+            email: authForm.value.email,
+            password: authForm.value.password, // Plaintext for pure local environment requirement
+            branch: authForm.value.branch,
+            role: 'Super Admin'
+          };
+          
+          dbState.value.users.push(masterAdmin);
+          saveDB();
+          
+          currentUserProfile.value = masterAdmin;
+          isAuthenticated.value = true;
+          loading.value = false;
+          pushNotification(`System Initialized. Public Registration Locked.`);
+          initializeDataPipelines();
+        };
+
+        // STANDARD LOGIN LOGIC
+        const handleLogin = () => {
+          loading.value = true;
+          authError.value = null;
+          
+          const foundUser = dbState.value.users.find(u => u.email === authForm.value.email && u.password === authForm.value.password);
+          
+          setTimeout(() => {
+            if (foundUser) {
+              currentUserProfile.value = foundUser;
+              isAuthenticated.value = true;
+              pushNotification(`Session Authorized: ${foundUser.name}`);
+              initializeDataPipelines();
+            } else {
+              authError.value = "Invalid credentials. Unauthorized Access.";
+            }
+            loading.value = false;
+          }, 400); // Fake delay for UX
+        };
+
+        const handleLogout = () => {
+          isAuthenticated.value = false;
+          currentUserProfile.value = null;
+          authForm.value.password = '';
+        };
+
+        const hasPermission = (allowedRoles) => {
+          if (!currentUserProfile.value) return false;
+          return allowedRoles.includes(currentUserProfile.value.role);
+        };
+
+        // CORE PIPELINE
+        const initializeDataPipelines = () => {
+          evaluateKPIs();
+          nextTick(() => {
+            renderChartsIfNeeded();
+            lucide.createIcons();
+          });
+          setInterval(processAutonomousTransitCalculations, 15000); 
+        };
+
+        // NOTIFICATIONS
+        const pushNotification = (title, type = 'info') => {
+          notifications.value.unshift({ id: Date.now().toString(), title, type, timestamp: new Date().toISOString() });
+        };
+        const formatTime = (iso) => iso ? new Date(iso).toLocaleTimeString() : '';
+        const toggleNotifications = () => showNotificationsBox.value = !showNotificationsBox.value;
+        const clearNotifications = () => notifications.value = [];
+        const unreadNotificationsCount = computed(() => notifications.value.length);
+
+        // KPIS
+        const kpis = ref({ todayRevenue: 0, transitParcels: 0, activeRoutes: 0, deliveredParcels: 0 });
+        
+        const evaluateKPIs = () => {
+          const branch = activeBranch.value;
+          const role = currentUserProfile.value?.role;
+
+          let targetParcels = dbState.value.parcels;
+          let targetFinances = dbState.value.finances;
+          let targetSchedules = dbState.value.schedules;
+
+          if (role !== 'Super Admin') {
+            targetParcels = targetParcels.filter(p => p.sendingBranch === branch || p.destinationBranch === branch);
+            targetFinances = targetFinances.filter(f => f.branch === branch);
+            targetSchedules = targetSchedules.filter(s => s.departureBranch === branch || s.arrivalBranch === branch);
+          }
+
+          kpis.value.todayRevenue = targetFinances.reduce((acc, curr) => acc + Number(curr.amount), 0);
+          kpis.value.transitParcels = targetParcels.filter(p => p.status === 'On The Way').length;
+          kpis.value.activeRoutes = targetSchedules.filter(s => s.status === 'Departed').length;
+          kpis.value.deliveredParcels = targetParcels.filter(p => p.status === 'Received').length;
+        };
+
+        // BACKGROUND AUTO-ARRIVAL SIMULATOR (3 Hours logic)
+        const processAutonomousTransitCalculations = () => {
+          let mutated = false;
+          const now = new Date();
+
+          dbState.value.parcels.forEach(p => {
+            if (p.status === 'On The Way' && p.departureTimestamp) {
+              const elapsedHours = (now - new Date(p.departureTimestamp)) / (1000 * 60 * 60);
+              // Set to 3 hours as per rules (for immediate testing change 3.0 to something smaller like 0.001)
+              if (elapsedHours >= 3.0) { 
+                p.status = 'Arrived';
+                p.arrivalAutomatedTimestamp = now.toISOString();
+                mutated = true;
+                pushNotification(`Parcel ${p.trackingNumber} reached ${p.destinationBranch}.`, 'success');
+              }
+            }
+          });
+          
+          if (mutated) {
+            saveDB();
+            evaluateKPIs();
+          }
+        };
+
+        // CHARTS
+        const renderChartsIfNeeded = () => {
+          if (currentView.value !== 'dashboard') return;
+          nextTick(() => {
+            const ctxTrend = document.getElementById('revenueTrendChart');
+            const ctxDensity = document.getElementById('parcelDistributionChart');
+            if (!ctxTrend || !ctxDensity) return;
+
+            if (revenueChartInstance) revenueChartInstance.destroy();
+            if (densityChartInstance) densityChartInstance.destroy();
+
+            const branchAggr = {}; staticBranches.forEach(b => branchAggr[b] = 0);
+            dbState.value.finances.forEach(f => { if (branchAggr[f.branch] !== undefined) branchAggr[f.branch] += Number(f.amount); });
+
+            revenueChartInstance = new Chart(ctxTrend, {
+              type: 'bar',
+              data: { labels: Object.keys(branchAggr), datasets: [{ data: Object.values(branchAggr), backgroundColor: '#2563eb', borderRadius: 8 }] },
+              options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+
+            const catAggr = { 'Passenger Tickets': 0, 'Parcel Delivery': 0, 'Cargo': 0, 'Other': 0 };
+            dbState.value.finances.forEach(f => { if (catAggr[f.category] !== undefined) catAggr[f.category] += 1; });
+
+            densityChartInstance = new Chart(ctxDensity, {
+              type: 'doughnut',
+              data: { labels: Object.keys(catAggr), datasets: [{ data: Object.values(catAggr), backgroundColor: ['#2563eb', '#3b82f6', '#60a5fa', '#cbd5e1'], borderWidth: 0 }] },
+              options: { responsive: true, maintainAspectRatio: false }
+            });
+          });
+        };
+
+        // COMPUTED FILTERS
+        const filteredParcels = computed(() => {
+          return dbState.value.parcels.filter(p => {
+            if (currentUserProfile.value?.role !== 'Super Admin' && p.sendingBranch !== activeBranch.value && p.destinationBranch !== activeBranch.value) return false;
+            const q = filters.value.parcelSearch.toLowerCase();
+            const passSearch = !q || p.trackingNumber.toLowerCase().includes(q) || p.senderPhone.includes(q) || p.receiverPhone.includes(q) || p.senderName.toLowerCase().includes(q) || p.receiverName.toLowerCase().includes(q);
+            const passStatus = filters.value.parcelStatus === 'All' || p.status === filters.value.parcelStatus;
+            return passSearch && passStatus;
+          });
+        });
+
+        const filteredSchedules = computed(() => {
+          return dbState.value.schedules.filter(s => {
+            if (currentUserProfile.value?.role !== 'Super Admin' && s.departureBranch !== activeBranch.value && s.arrivalBranch !== activeBranch.value) return false;
+            return !filters.value.scheduleSearch || s.arrivalBranch.toLowerCase().includes(filters.value.scheduleSearch.toLowerCase());
+          });
+        });
+
+        const filteredFinances = computed(() => {
+          return dbState.value.finances.filter(f => {
+            if (currentUserProfile.value?.role !== 'Super Admin' && f.branch !== activeBranch.value) return false;
+            return filters.value.financeCategory === 'All' || f.category === filters.value.financeCategory;
+          });
+        });
+
+        // MODAL OPERATIONS
+        const openModal = (type) => {
+          activeModal.value = type;
+          if (type === 'parcel') generatedTrackingCode.value = 'SL-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+          nextTick(() => lucide.createIcons());
+        };
+        const closeModal = () => activeModal.value = null;
+
+        const submitModalForm = () => {
+          const id = Date.now().toString();
+          const timestamp = new Date().toISOString();
+          const datestamp = new Date().toLocaleDateString();
+
+          if (activeModal.value === 'user') {
+            dbState.value.users.push({ id: 'USR-' + id, ...modalData.value.user });
+            pushNotification(`New staff provisioned: ${modalData.value.user.name}`, 'success');
+            modalData.value.user = { name: '', email: '', password: '', branch: 'Hargeisa', role: 'Staff' }; // reset
+          } 
+          else if (activeModal.value === 'schedule') {
+            dbState.value.schedules.push({ id: 'SCH-' + id, ...modalData.value.schedule, departureBranch: activeBranch.value, status: 'Scheduled' });
+            pushNotification(`Schedule created for Bus ${modalData.value.schedule.busNumber}`);
+          } 
+          else if (activeModal.value === 'parcel') {
+            dbState.value.parcels.push({ id: 'PKG-' + id, ...modalData.value.parcel, trackingNumber: generatedTrackingCode.value, sendingBranch: activeBranch.value, status: 'Registered', timestamp });
+            dbState.value.finances.push({ id: 'FIN-' + id, amount: Number(modalData.value.parcel.price), description: `Parcel Booking [${generatedTrackingCode.value}]`, branch: activeBranch.value, category: 'Parcel Delivery', date: datestamp });
+            pushNotification(`Parcel ${generatedTrackingCode.value} registered`, 'success');
+          } 
+          else if (activeModal.value === 'finance') {
+            dbState.value.finances.push({ id: 'FIN-' + id, ...modalData.value.finance, branch: activeBranch.value, date: datestamp });
+            pushNotification(`Financial entry posted: $${modalData.value.finance.amount}`, 'success');
+          }
+
+          saveDB();
+          evaluateKPIs();
+          renderChartsIfNeeded();
+          closeModal();
+        };
+
+        // INLINE ACTIONS
+        const updateScheduleStatus = (id, status) => {
+          const sIdx = dbState.value.schedules.findIndex(s => s.id === id);
+          if (sIdx > -1) {
+            dbState.value.schedules[sIdx].status = status;
+            
+            // If departing, update linked parcels to "On The Way"
+            if (status === 'Departed') {
+              const sched = dbState.value.schedules[sIdx];
+              dbState.value.parcels.forEach(p => {
+                if (p.sendingBranch === sched.departureBranch && p.destinationBranch === sched.arrivalBranch && p.status === 'Registered') {
+                  p.status = 'On The Way';
+                  p.departureTimestamp = new Date().toISOString();
+                }
+              });
+              pushNotification(`Bus departed. Mapped parcels are now In-Transit.`);
+            }
+            saveDB();
+            evaluateKPIs();
+          }
+        };
+
+        const markParcelReceived = (parcel) => {
+          const pIdx = dbState.value.parcels.findIndex(p => p.id === parcel.id);
+          if (pIdx > -1) {
+            dbState.value.parcels[pIdx].status = 'Received';
+            saveDB();
+            evaluateKPIs();
+            pushNotification(`Parcel ${parcel.trackingNumber} received securely.`, 'success');
+          }
+        };
+
+        const deleteItem = (collectionName, id) => {
+          dbState.value[collectionName] = dbState.value[collectionName].filter(item => item.id !== id);
+          saveDB();
+          evaluateKPIs();
+          renderChartsIfNeeded();
+          pushNotification(`Item permanently removed from local database.`);
+        };
+
+        onMounted(() => { lucide.createIcons(); });
+
+        return {
+          dbState, isAuthenticated, isSystemEmpty, loading, authError, authForm, currentView, menuItems, staticBranches, staticCategories, activeBranch, currentUserProfile,
+          filteredParcels, filteredSchedules, filteredFinances, notifications, showNotificationsBox, activeModal, filters, modalData, generatedTrackingCode, kpis, unreadNotificationsCount,
+          handleInitializeSystem, handleLogin, handleLogout, hasPermission, openModal, closeModal, toggleNotifications, clearNotifications, submitModalForm, updateScheduleStatus, markParcelReceived, deleteItem, formatTime, renderChartsIfNeeded
+        };
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
